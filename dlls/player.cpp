@@ -3452,15 +3452,17 @@ void CBasePlayer::ImpulseCommands()
 		break;
 	}
 	case 100:
-		// temporary flashlight for level designers
-		if (FlashlightIsOn())
-		{
-			FlashlightTurnOff();
-		}
-		else
-		{
-			FlashlightTurnOn();
-		}
+		// _or: Disable flashlight
+
+		//// temporary flashlight for level designers
+		//if (FlashlightIsOn())
+		//{
+		//	FlashlightTurnOff();
+		//}
+		//else
+		//{
+		//	FlashlightTurnOn();
+		//}
 		break;
 
 	case 201: // paint decal
