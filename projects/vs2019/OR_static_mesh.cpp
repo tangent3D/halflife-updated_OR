@@ -6,6 +6,8 @@
 
 LINK_ENTITY_TO_CLASS(OR_StaticMesh, CStaticMesh);
 
+// _or:
+
 void CStaticMesh::Spawn(void)
 {
 	PRECACHE_MODEL((char*)STRING(pev->model));

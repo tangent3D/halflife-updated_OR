@@ -342,8 +342,11 @@ void CBasePlayer::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vec
 	etc are implemented with subsequent calls to TakeDamage using DMG_GENERIC.
 */
 
-#define ARMOR_RATIO 0.2 // Armor Takes 80% of the damage
-#define ARMOR_BONUS 0.5 // Each Point of Armor is work 1/x points of health
+// _or: Ignore armor
+ #define ARMOR_RATIO 0.0
+ #define ARMOR_BONUS 0.0
+//#define ARMOR_RATIO 0.2 // Armor Takes 80% of the damage
+//#define ARMOR_BONUS 0.5 // Each Point of Armor is work 1/x points of health
 
 bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
@@ -383,29 +386,30 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 
 	// keep track of amount of damage last sustained
 	m_lastDamageAmount = flDamage;
+	
+	// _or: Ignore armor
+	//// Armor.
+	//if (0 != pev->armorvalue && (bitsDamageType & (DMG_FALL | DMG_DROWN)) == 0) // armor doesn't protect against fall or drown damage!
+	//{
+	//	float flNew = flDamage * flRatio;
 
-	// Armor.
-	if (0 != pev->armorvalue && (bitsDamageType & (DMG_FALL | DMG_DROWN)) == 0) // armor doesn't protect against fall or drown damage!
-	{
-		float flNew = flDamage * flRatio;
+	//	float flArmor;
 
-		float flArmor;
+	//	flArmor = (flDamage - flNew) * flBonus;
 
-		flArmor = (flDamage - flNew) * flBonus;
+	//	// Does this use more armor than we have?
+	//	if (flArmor > pev->armorvalue)
+	//	{
+	//		flArmor = pev->armorvalue;
+	//		flArmor *= (1 / flBonus);
+	//		flNew = flDamage - flArmor;
+	//		pev->armorvalue = 0;
+	//	}
+	//	else
+	//		pev->armorvalue -= flArmor;
 
-		// Does this use more armor than we have?
-		if (flArmor > pev->armorvalue)
-		{
-			flArmor = pev->armorvalue;
-			flArmor *= (1 / flBonus);
-			flNew = flDamage - flArmor;
-			pev->armorvalue = 0;
-		}
-		else
-			pev->armorvalue -= flArmor;
-
-		flDamage = flNew;
-	}
+	//	flDamage = flNew;
+	//}
 
 	// this cast to INT is critical!!! If a player ends up with 0.5 health, the engine will get that
 	// as an int (zero) and think the player is dead! (this will incite a clientside screentilt, etc)
@@ -3527,7 +3531,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	case 101:
 		gEvilImpulse101 = true;
 		GiveNamedItem("item_suit");
-		GiveNamedItem("item_battery");
+		//GiveNamedItem("item_battery");
 		GiveNamedItem("weapon_crowbar");
 		GiveNamedItem("weapon_9mmhandgun");
 		GiveNamedItem("ammo_9mmclip");

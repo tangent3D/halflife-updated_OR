@@ -59,6 +59,9 @@ enum WeaponId
 	WEAPON_SATCHEL,
 	WEAPON_SNARK,
 
+	// _or: OR weapon IDs
+	WEAPON_REMOTE,
+
 	WEAPON_SUIT = 31
 };
 

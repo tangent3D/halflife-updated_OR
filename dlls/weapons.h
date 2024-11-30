@@ -475,7 +475,55 @@ bool bIsMultiplayer();
 void LoadVModel(const char* szViewModel, CBasePlayer* m_pPlayer);
 #endif
 
-enum glock_e
+// _or: Remote weapon animations
+enum remote_e
+{
+	REMOTE_IDLE1 = 0,
+	REMOTE_IDLE2,
+	REMOTE_IDLE3,
+	REMOTE_SHOOT,
+	REMOTE_SHOOT_EMPTY,
+	REMOTE_RELOAD,
+	REMOTE_RELOAD_NOT_EMPTY,
+	REMOTE_DRAW,
+	REMOTE_HOLSTER,
+	REMOTE_ADD_SILENCER
+};
+
+//_or: Remote weapon class definition
+class CRemote : public CBasePlayerWeapon
+{
+public:
+	void Spawn() override;
+	void Precache() override;
+	int iItemSlot() override { return 2; }
+	bool GetItemInfo(ItemInfo* p) override;
+
+	void PrimaryAttack() override;
+	void SecondaryAttack() override;
+	void RemoteFire(float flSpread, float flCycleTime, bool fUseAutoAim);
+	bool Deploy() override;
+	void Reload() override;
+	void WeaponIdle() override;
+
+	bool UseDecrement() override
+	{
+#if defined(CLIENT_WEAPONS)
+		return true;
+#else
+		return false;
+#endif
+	}
+
+private:
+	int m_iShell;
+
+
+	unsigned short m_usFireRemote1;
+	unsigned short m_usFireRemote2;
+};
+
+enum remote_e
 {
 	GLOCK_IDLE1 = 0,
 	GLOCK_IDLE2,
